@@ -128,6 +128,9 @@ const isTwoPair = (data) => {
     const hand = convertStringToHand(data);
     const sorted = sortByValue(hand);
     const firstPair = findPair(sorted);
+    if (firstPair) {
+        const spliced = [...sorted].splice(hand.indexOf(firstPair), 1);
+    }
     return false;
 };
 module.exports.HandValues = HandValues;
