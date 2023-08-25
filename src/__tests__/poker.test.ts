@@ -1,6 +1,7 @@
 // import { comparePokerHands, HandValues } from "../dist/poker";
 
-const poker = require("../dist/poker");
+const { describe, expect, it } = require("@jest/globals");
+const poker = require("../poker");
 
 const {
 	HandValues,
@@ -20,6 +21,8 @@ const {
 	isPair,
 	isTwoPair,
 	findPair,
+	isFlush,
+	findXofAKind,
 } = poker;
 
 const handPairs = [
@@ -101,17 +104,32 @@ describe.only("evaluate hand", () => {
 		expect(isHighCard(handPairs[1].b)).toBe(false);
 	});
 	it("should recognise PAIR", () => {
-		expect(isPair(handPairs[1].b)).toBe(true);
-		expect(isPair(handPairs[0].a)).toBe(false);
+		expect(isPair("AH AC 5H 6H AS")).toBe(false);
+		expect(isPair("AH AC 5H 5H 5S")).toBe(true);
 	});
 	it("should be able to find two cards of the same value", () => {
-		expect(findPair("AH AC 5H 6H AS")).toBe(false);
-		expect(findPair("AH AC 5H 5H 5S")).toBe(true);
+		expect(!!findPair(convertStringToHand("AH AC KH KH QS"))).toBe(true);
+		expect(findPair(convertStringToHand("AH AC KH KH QS"))).toEqual([
+			{ value: "A", suite: "H" },
+			{ value: "A", suite: "C" },
+		]);
+		expect(!!findPair(convertStringToHand("AH QC 5H 5H 5S"))).toBe(false);
 	});
-	// it("should recognise TWO PAIR", () => {
-	// 	expect(isTwoPair(handPairs[1].b)).toBe(true);
-	// 	expect(isTwoPair(handPairs[0].a)).toBe(false);
-	// });
+	it("should recognise be able to find x cards of the same value", () => {
+		expect(!!findXofAKind("AH AC KH KH QS", 2)).toBe(true);
+		expect(!!findXofAKind("AH AC AH KH QS", 2)).toBe(false);
+		expect(!!findXofAKind("AH AC AH 5H 5S", 3)).toBe(true);
+		expect(!!findXofAKind("AH AC AH AH 5S", 3)).toBe(false);
+		expect(!!findXofAKind("AH AC AH AH 5S", 4)).toBe(true);
+	});
+	it("should recognise TWO PAIR", () => {
+		expect(isTwoPair("AH AC KH KH QS")).toBe(true);
+		expect(isTwoPair("AH QC 5H 5H 5S")).toBe(false);
+	});
+	it("should recognise FLUSH", () => {
+		expect(isFlush("AH AH KH KH QH")).toBe(true);
+		expect(isFlush("AH QH 5H 5H 5S")).toBe(false);
+	});
 });
 
 describe("compare 2 hands", () => {

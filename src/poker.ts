@@ -10,7 +10,7 @@ enum HandValues {
 	STRAIGHT_FLUSH,
 }
 
-const handPairs = [
+export const handPairs = [
 	{ a: "2H 3H 4H 5H 6H", b: "KS AS TS QS JS" },
 	{ a: "2H 3H 4H 5H 6H", b: "AS AD AC AH JD" },
 	{ a: "AS AH 2H AD AC", b: "JS JD JC JH 3D" },
@@ -115,7 +115,6 @@ const convertStringToHand = (handString: string): Card[] => {
 
 const sortByValue = (unsortedHand: Card[]): Card[][] => {
 	const resultMap = new Map();
-	// const hand = convertStringToHand(handString);
 	unsortedHand.forEach((card) => {
 		const key: string = card.value;
 		if (resultMap.has(key)) {
@@ -140,18 +139,30 @@ const isPair = (data: string): boolean => {
 	return !!sorted.find((cardGroup) => cardGroup.length === 2);
 };
 
-const findPair = (cardArray: Card[][]): Card[] | undefined => {
-	return cardArray.find((cardGroup) => cardGroup.length === 2);
+const findXofAKind = (data: string, x: number): Card[] | undefined => {
+	const hand = convertStringToHand(data);
+	const sorted = sortByValue(hand);
+	return sorted.find((cardGroup) => cardGroup.length === x);
+};
+
+const findPair = (cardArray: Card[]): Card[] | undefined => {
+	const sorted = sortByValue(cardArray);
+	return sorted.find((cardGroup) => cardGroup.length === 2);
 };
 
 const isTwoPair = (data: string): boolean => {
 	const hand = convertStringToHand(data);
-	const sorted = sortByValue(hand);
-	const firstPair = findPair(sorted);
+	const firstPair = findPair(hand);
 	if (firstPair) {
-		const spliced = [...sorted].splice(hand.indexOf(firstPair), 1);
+		const filtered = hand.filter((card) => card.value != firstPair[0].value);
+		return !!findPair(filtered);
 	}
 	return false;
+};
+
+const isFlush = (data: string): boolean => {
+	const hand = convertStringToHand(data);
+	return hand.every((card) => card.suite === hand[0].suite);
 };
 
 module.exports.HandValues = HandValues;
@@ -171,3 +182,5 @@ module.exports.isHighCard = isHighCard;
 module.exports.isPair = isPair;
 module.exports.isTwoPair = isTwoPair;
 module.exports.findPair = findPair;
+module.exports.isFlush = isFlush;
+module.exports.findXofAKind = findXofAKind;
