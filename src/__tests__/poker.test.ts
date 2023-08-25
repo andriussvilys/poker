@@ -20,7 +20,6 @@ const {
 	isHighCard,
 	isPair,
 	isTwoPair,
-	findPair,
 	isFlush,
 	findXofAKind,
 } = poker;
@@ -107,20 +106,24 @@ describe.only("evaluate hand", () => {
 		expect(isPair("AH AC 5H 6H AS")).toBe(false);
 		expect(isPair("AH AC 5H 5H 5S")).toBe(true);
 	});
-	it("should be able to find two cards of the same value", () => {
-		expect(!!findPair(convertStringToHand("AH AC KH KH QS"))).toBe(true);
-		expect(findPair(convertStringToHand("AH AC KH KH QS"))).toEqual([
-			{ value: "A", suite: "H" },
-			{ value: "A", suite: "C" },
-		]);
-		expect(!!findPair(convertStringToHand("AH QC 5H 5H 5S"))).toBe(false);
-	});
+	// it("should be able to find two cards of the same value", () => {
+	// 	expect(!!findPair(convertStringToHand("AH AC KH KH QS"))).toBe(true);
+	// 	expect(findPair(convertStringToHand("AH AC KH KH QS"))).toEqual([
+	// 		{ value: "A", suite: "H" },
+	// 		{ value: "A", suite: "C" },
+	// 	]);
+	// 	expect(!!findPair(convertStringToHand("AH QC 5H 5H 5S"))).toBe(false);
+	// });
 	it("should recognise be able to find x cards of the same value", () => {
-		expect(!!findXofAKind("AH AC KH KH QS", 2)).toBe(true);
-		expect(!!findXofAKind("AH AC AH KH QS", 2)).toBe(false);
-		expect(!!findXofAKind("AH AC AH 5H 5S", 3)).toBe(true);
-		expect(!!findXofAKind("AH AC AH AH 5S", 3)).toBe(false);
-		expect(!!findXofAKind("AH AC AH AH 5S", 4)).toBe(true);
+		expect(!!findXofAKind(convertStringToHand("AH AC KH KH QS"), 2)).toBe(true);
+		expect(!!findXofAKind(convertStringToHand("AH AC AH KH QS"), 2)).toBe(
+			false
+		);
+		expect(!!findXofAKind(convertStringToHand("AH AC AH 5H 5S"), 3)).toBe(true);
+		expect(!!findXofAKind(convertStringToHand("AH AC AH AH 5S"), 3)).toBe(
+			false
+		);
+		expect(!!findXofAKind(convertStringToHand("AH AC AH AH 5S"), 4)).toBe(true);
 	});
 	it("should recognise TWO PAIR", () => {
 		expect(isTwoPair("AH AC KH KH QS")).toBe(true);

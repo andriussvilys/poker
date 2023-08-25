@@ -135,27 +135,20 @@ const isHighCard = (data: string): boolean => {
 
 const isPair = (data: string): boolean => {
 	const hand = convertStringToHand(data);
-	const sorted = sortByValue(hand);
-	return !!sorted.find((cardGroup) => cardGroup.length === 2);
+	return !!findXofAKind(hand, 2);
 };
 
-const findXofAKind = (data: string, x: number): Card[] | undefined => {
-	const hand = convertStringToHand(data);
-	const sorted = sortByValue(hand);
+const findXofAKind = (data: Card[], x: number): Card[] | undefined => {
+	const sorted = sortByValue(data);
 	return sorted.find((cardGroup) => cardGroup.length === x);
-};
-
-const findPair = (cardArray: Card[]): Card[] | undefined => {
-	const sorted = sortByValue(cardArray);
-	return sorted.find((cardGroup) => cardGroup.length === 2);
 };
 
 const isTwoPair = (data: string): boolean => {
 	const hand = convertStringToHand(data);
-	const firstPair = findPair(hand);
+	const firstPair = findXofAKind(hand, 2);
 	if (firstPair) {
 		const filtered = hand.filter((card) => card.value != firstPair[0].value);
-		return !!findPair(filtered);
+		return !!findXofAKind(filtered, 2);
 	}
 	return false;
 };
@@ -181,6 +174,6 @@ module.exports.convertStringToHand = convertStringToHand;
 module.exports.isHighCard = isHighCard;
 module.exports.isPair = isPair;
 module.exports.isTwoPair = isTwoPair;
-module.exports.findPair = findPair;
+// module.exports.findPair = findPair;
 module.exports.isFlush = isFlush;
 module.exports.findXofAKind = findXofAKind;
