@@ -1,0 +1,29 @@
+Parameters: a, b
+    a and b are strings representing 5 cards separated by space e.g. '2S 2H 4H 5S 4C'.
+    The first character represents the value of the card: [2, 3, 4, 5, 6, 7, 8, 9, T, J, Q, K, A]
+    The second character represents the suit: [S, H, D, C]
+
+Return value:
+1  - hand a has higher rank
+-1 - hand b has higher rank
+0  - hands have same rank
+
+Errors:
+Throw an error when hand is invalid
+
+'2H 3H 4H 5H 6H', 'KS AS TS QS JS' => -1
+'2H 3H 4H 5H 6H', 'AS AD AC AH JD' => 1
+'AS AH 2H AD AC', 'JS JD JC JH 3D' => 1
+'2S AH 2H AS AC', 'JS JD JC JH AD' => -1
+'2S AH 2H AS AC', '2H 3H 5H 6H 7H' => 1
+'AS 3S 4S 8S 2S', '2H 3H 5H 6H 7H' => 1
+'2H 3H 5H 6H 7H', '2S 3H 4H 5S 6C' => 1
+'2S 3H 4H 5S 6C', '3D 4C 5H 6H 2S' => 0
+'2S 3H 4H 5S 6C', 'AH AC 5H 6H AS' => 1
+'2S 2H 4H 5S 4C', 'AH AC 5H 6H AS' => -1
+'2S 2H 4H 5S 4C', 'AH AC 5H 6H 7S' => 1
+'6S AD 7H 4S AS', 'AH AC 5H 6H 7S' => -1
+'2S AH 4H 5S KC', 'AH AC 5H 6H 7S' => -1
+'2S 3H 6H 7S 9C', '7H 3C TH 6H 9S' => -1
+'4S 5H 6H TS AC', '3S 5H 6H TS AC' => 1
+'2S AH 4H 5S 6C', 'AD 4C 5H 6H 2C' => 0
