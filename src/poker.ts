@@ -142,15 +142,30 @@ const getHandValue = (data: string):number => {
 // 1  - hand a has higher rank
 // -1 - hand b has higher rank
 // 0  - hands have same rank
+const compareSameRankHands = (a:Card[], b:Card[]):number => {
+	if(a.length === 0){
+		return 0
+	}
+	const cardA = a[a.length-1]
+	const cardB = b[b.length-1]
+	if(cardA.value > cardB.value){
+		return 1
+	}
+	if(cardA.value < cardB.value){
+		return -1
+	}
+	return compareSameRankHands(a.slice(0, a.length-1), b.slice(0, b.length-1))
+}
 const comparePokerHands = (a: string, b: string): number => {
-	const handValues = [getHandValue(a), getHandValue(b)]
+	// const handValues = [getHandValue(a), getHandValue(b)]
+	const handValues = [rankValues[getHandRank(a)], rankValues[getHandRank(b)]]
 	if(handValues[0] > handValues[1]){
 		return 1
 	}
 	if(handValues[0] < handValues[1]){
 		return -1
 	}
-	return 0;
+	return compareSameRankHands(convertStringToHand(a), convertStringToHand(b))
 };
 
 const convertStringToHand = (handString: string): Card[] => {
