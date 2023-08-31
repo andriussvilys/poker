@@ -146,8 +146,8 @@ const compareSameRankHands = (a:Card[], b:Card[]):number => {
 	if(a.length === 0){
 		return 0
 	}
-	const cardA = a[a.length-1]
-	const cardB = b[b.length-1]
+	const cardA = sortByValue(a)[a.length-1]
+	const cardB = sortByValue(b)[b.length-1]
 	if(cardA.value > cardB.value){
 		return 1
 	}
