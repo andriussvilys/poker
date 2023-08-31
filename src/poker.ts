@@ -102,10 +102,6 @@ const isValidInitialData = (data: InitialData): boolean => {
 	return data.every((pair) => isValidPair(pair));
 };
 
-const getHandValue = (hand: string): number => {
-	return 0;
-};
-
 const getHandRank = (data: string):Ranks => {
 	if(isStraightFlush(data)){
 		return Ranks.STRAIGHT_FLUSH
@@ -134,12 +130,20 @@ const getHandRank = (data: string):Ranks => {
 	return Ranks.HIGH_CARD
 }
 
+const getHandValue = (data: string):number => {
+	const rankValue = rankValues[getHandRank(data)]
+	const hand = convertStringToHand(data)
+	const values = hand.map(card => getCardValue(card.value))
+	const accumulatedCardValue = values.reduce((acc, currentValue) => acc + currentValue)
+	return (rankValue ) + accumulatedCardValue
+}
+
 // Return value:
 // 1  - hand a has higher rank
 // -1 - hand b has higher rank
 // 0  - hands have same rank
 const comparePokerHands = (a: string, b: string): number => {
-	const handValues = [rankValues[getHandRank(a)], rankValues[getHandRank(b)]]
+	const handValues = [getHandValue(a), getHandValue(b)]
 	if(handValues[0] > handValues[1]){
 		return 1
 	}
